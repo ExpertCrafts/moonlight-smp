@@ -4,173 +4,196 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moonlight SMP</title>
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root {
-      --bg-color: #0b0e14;
-      --card-bg: #161b22;
-      --accent-color: #7c3aed;
-      --accent-hover: #6d28d9;
-      --text-main: #f3f4f6;
-      --text-muted: #9ca3af;
-      --online-color: #10b981;
-      --offline-color: #ef4444;
+      --mc-font: 'Press Start 2P', monospace;
+      --mc-gold: #ffaa00;
+      --mc-yellow: #ffff55;
+      --mc-green: #55ff55;
+      --mc-red: #ff5555;
+      --mc-dark: #1e1e1e;
+      --mc-panel: #2c2c2c;
+      --discord-purple: #5865F2;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
-      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      font-family: var(--mc-font);
+      image-rendering: pixelated;
     }
 
     body {
-      background-color: var(--bg-color);
-      color: var(--text-main);
+      background-color: #0d0d11;
+      background-image: 
+        radial-gradient(circle at 50% 20%, rgba(85, 85, 255, 0.15), transparent 60%),
+        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+        url('https://raw.githubusercontent.com/InventivotalentDev/minecraft-assets/1.20/assets/minecraft/textures/block/deepslate.png');
+      background-repeat: repeat;
+      color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
       min-height: 100vh;
-      background-image: radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.15), transparent 50%);
+      padding: 20px;
     }
 
     .container {
       width: 100%;
-      max-width: 600px;
-      padding: 20px;
+      max-width: 650px;
     }
 
-    .card {
-      background-color: var(--card-bg);
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      border-radius: 16px;
-      padding: 32px;
+    .mc-box {
+      background-color: var(--mc-panel);
+      border: 4px solid #000;
+      box-shadow: 
+        inset -4px -4px 0px 0px #141414,
+        inset 4px 4px 0px 0px #4a4a4a,
+        0px 10px 20px rgba(0,0,0,0.8);
+      padding: 32px 24px;
       text-align: center;
-      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
     }
 
     .title {
-      font-size: 2.5rem;
-      font-weight: 800;
-      margin-bottom: 8px;
-      background: linear-gradient(135deg, #a78bfa, #7c3aed);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      font-size: 1.8rem;
+      color: var(--mc-gold);
+      text-shadow: 3px 3px 0px #3f2a00;
+      margin-bottom: 12px;
+      line-height: 1.3;
     }
 
     .subtitle {
-      color: var(--text-muted);
-      font-size: 0.95rem;
-      margin-bottom: 24px;
+      color: #aaa;
+      font-size: 0.65rem;
+      line-height: 1.6;
+      margin-bottom: 28px;
+      text-shadow: 1px 1px 0px #000;
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
       gap: 16px;
       margin-bottom: 24px;
     }
 
-    .stat-box {
-      background: rgba(0, 0, 0, 0.2);
-      border: 1px solid rgba(255, 255, 255, 0.05);
-      border-radius: 12px;
+    .stat-card {
+      background-color: var(--mc-dark);
+      border: 3px solid #000;
+      box-shadow: 
+        inset -3px -3px 0px 0px #111,
+        inset 3px 3px 0px 0px #333;
       padding: 16px 8px;
     }
 
     .stat-label {
-      font-size: 0.75rem;
-      color: var(--text-muted);
-      text-transform: uppercase;
-      margin-bottom: 6px;
+      font-size: 0.55rem;
+      color: #888;
+      text-shadow: 1px 1px 0px #000;
+      margin-bottom: 10px;
     }
 
     .stat-value {
-      font-size: 1.25rem;
-      font-weight: 700;
+      font-size: 0.75rem;
+      color: #fff;
+      text-shadow: 1px 1px 0px #000;
     }
 
-    .status-indicator {
-      display: inline-block;
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      background-color: var(--text-muted);
-      margin-right: 6px;
-    }
+    .status-online { color: var(--mc-green); }
+    .status-offline { color: var(--mc-red); }
 
-    .status-indicator.online { background-color: var(--online-color); }
-    .status-indicator.offline { background-color: var(--offline-color); }
-
-    .ip-box {
+    .action-container {
+      background-color: var(--mc-dark);
+      border: 3px solid #000;
+      box-shadow: 
+        inset -3px -3px 0px 0px #111,
+        inset 3px 3px 0px 0px #333;
+      padding: 12px 16px;
       display: flex;
-      gap: 8px;
-      background: rgba(0, 0, 0, 0.3);
-      padding: 8px 12px;
-      border-radius: 8px;
-      border: 1px dashed rgba(255, 255, 255, 0.2);
-      align-items: center;
       justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
     }
 
-    .ip-text {
-      font-family: monospace;
-      color: #a78bfa;
-      font-size: 1rem;
+    .action-container:last-child {
+      margin-bottom: 0;
     }
 
-    .copy-btn {
-      background: var(--accent-color);
-      color: white;
-      border: none;
-      padding: 8px 16px;
-      border-radius: 6px;
+    .action-text {
+      color: var(--mc-yellow);
+      font-size: 0.65rem;
+      text-shadow: 1px 1px 0px #000;
+      word-break: break-all;
+    }
+
+    .mc-button {
+      background-color: #707070;
+      color: #fff;
+      border: 2px solid #000;
+      box-shadow: 
+        inset -2px -2px 0px 0px #383838,
+        inset 2px 2px 0px 0px #a8a8a8;
+      padding: 10px 16px;
+      font-size: 0.6rem;
       cursor: pointer;
-      font-weight: 600;
-      transition: background 0.2s;
+      text-shadow: 1px 1px 0px #000;
     }
 
-    .copy-btn:hover {
-      background: var(--accent-hover);
+    .mc-button:active {
+      box-shadow: 
+        inset 2px 2px 0px 0px #383838,
+        inset -2px -2px 0px 0px #a8a8a8;
+    }
+
+    .discord-btn {
+      background-color: var(--discord-purple);
+      box-shadow: 
+        inset -2px -2px 0px 0px #2c3380,
+        inset 2px 2px 0px 0px #8892f7;
     }
   </style>
 </head>
 <body>
 
   <div class="container">
-    <div class="card">
-      <h1 class="title">Moonlight SMP</h1>
+    <div class="mc-box">
+      <h1 class="title">MOONLIGHT SMP</h1>
       <p class="subtitle">A brand new adventure is currently in development.</p>
 
       <div class="stats-grid">
-        <div class="stat-box">
-          <div class="stat-label">Status</div>
-          <div class="stat-value" id="status-val">
-            <span class="status-indicator" id="status-dot"></span>
-            <span id="status-text">Checking...</span>
-          </div>
+        <div class="stat-card">
+          <div class="stat-label">STATUS</div>
+          <div class="stat-value" id="status-val">Loading...</div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Players</div>
+        <div class="stat-card">
+          <div class="stat-label">PLAYERS</div>
           <div class="stat-value" id="players-val">--/--</div>
         </div>
-        <div class="stat-box">
-          <div class="stat-label">Ping</div>
+        <div class="stat-card">
+          <div class="stat-label">PING</div>
           <div class="stat-value" id="ping-val">-- ms</div>
         </div>
       </div>
 
       <div class="stats-grid" style="grid-template-columns: 1fr; margin-bottom: 24px;">
-        <div class="stat-box">
-          <div class="stat-label">Target Version</div>
-          <div class="stat-value" style="color: #a78bfa;">26.x</div>
+        <div class="stat-card">
+          <div class="stat-label">TARGET VERSION</div>
+          <div class="stat-value" style="color: var(--mc-gold);">26.x</div>
         </div>
       </div>
 
-      <div class="ip-box">
-        <span class="ip-text" id="server-ip">mc.hypixel.net</span>
-        <button class="copy-btn" onclick="copyIp()">Copy IP</button>
+      <div class="action-container">
+        <span class="action-text">mc.hypixel.net</span>
+        <button class="mc-button" onclick="copyText('mc.hypixel.net', this, 'COPY IP')">COPY IP</button>
+      </div>
+
+      <div class="action-container">
+        <span class="action-text" style="color: #8892f7;">discord.gg/v9fGkejqs</span>
+        <button class="mc-button discord-btn" onclick="copyText('https://discord.gg/v9fGkejqs', this, 'COPY DISCORD')">COPY DISCORD</button>
       </div>
     </div>
   </div>
@@ -181,40 +204,38 @@
     async function fetchServerStatus() {
       const startTime = Date.now();
       try {
-        const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+        const response = await fetch(`https://api.mcstatus.io/v2/status/java/${SERVER_IP}`);
         const latency = Date.now() - startTime;
         const data = await response.json();
 
-        const statusDot = document.getElementById("status-dot");
-        const statusText = document.getElementById("status-text");
+        const statusVal = document.getElementById("status-val");
         const playersVal = document.getElementById("players-val");
         const pingVal = document.getElementById("ping-val");
 
         if (data.online) {
-          statusDot.className = "status-indicator online";
-          statusText.textContent = "Online";
+          statusVal.textContent = "ONLINE";
+          statusVal.className = "stat-value status-online";
           playersVal.textContent = `${data.players.online}/${data.players.max}`;
           pingVal.textContent = `${latency} ms`;
         } else {
-          statusDot.className = "status-indicator offline";
-          statusText.textContent = "Offline";
+          statusVal.textContent = "OFFLINE";
+          statusVal.className = "stat-value status-offline";
           playersVal.textContent = "0/0";
           pingVal.textContent = "N/A";
         }
       } catch (err) {
-        document.getElementById("status-text").textContent = "Error";
+        document.getElementById("status-val").textContent = "ERROR";
       }
     }
 
-    function copyIp() {
-      navigator.clipboard.writeText(SERVER_IP);
-      const btn = document.querySelector(".copy-btn");
-      btn.textContent = "Copied!";
-      setTimeout(() => { btn.textContent = "Copy IP"; }, 2000);
+    function copyText(textToCopy, buttonEl, originalText) {
+      navigator.clipboard.writeText(textToCopy);
+      buttonEl.textContent = "COPIED!";
+      setTimeout(() => { buttonEl.textContent = originalText; }, 2000);
     }
 
     fetchServerStatus();
-    setInterval(fetchServerStatus, 30000); // Auto-refresh every 30 seconds
+    setInterval(fetchServerStatus, 15000);
   </script>
 </body>
 </html>
