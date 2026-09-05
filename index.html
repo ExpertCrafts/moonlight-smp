@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Moonlight SMP</title>
+  <style>
+    :root {
+      --bg-color: #0b0e14;
+      --card-bg: #161b22;
+      --accent-color: #7c3aed;
+      --accent-hover: #6d28d9;
+      --text-main: #f3f4f6;
+      --text-muted: #9ca3af;
+      --online-color: #10b981;
+      --offline-color: #ef4444;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      background-image: radial-gradient(circle at 50% 20%, rgba(124, 58, 237, 0.15), transparent 50%);
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
+    }
+
+    .card {
+      background-color: var(--card-bg);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 16px;
+      padding: 32px;
+      text-align: center;
+      box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+    }
+
+    .title {
+      font-size: 2.5rem;
+      font-weight: 800;
+      margin-bottom: 8px;
+      background: linear-gradient(135deg, #a78bfa, #7c3aed);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+    }
+
+    .subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 24px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-box {
+      background: rgba(0, 0, 0, 0.2);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      border-radius: 12px;
+      padding: 16px 8px;
+    }
+
+    .stat-label {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .stat-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .status-indicator {
+      display: inline-block;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background-color: var(--text-muted);
+      margin-right: 6px;
+    }
+
+    .status-indicator.online { background-color: var(--online-color); }
+    .status-indicator.offline { background-color: var(--offline-color); }
+
+    .ip-box {
+      display: flex;
+      gap: 8px;
+      background: rgba(0, 0, 0, 0.3);
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px dashed rgba(255, 255, 255, 0.2);
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .ip-text {
+      font-family: monospace;
+      color: #a78bfa;
+      font-size: 1rem;
+    }
+
+    .copy-btn {
+      background: var(--accent-color);
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: background 0.2s;
+    }
+
+    .copy-btn:hover {
+      background: var(--accent-hover);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <h1 class="title">Moonlight SMP</h1>
+      <p class="subtitle">A brand new adventure is currently in development.</p>
+
+      <div class="stats-grid">
+        <div class="stat-box">
+          <div class="stat-label">Status</div>
+          <div class="stat-value" id="status-val">
+            <span class="status-indicator" id="status-dot"></span>
+            <span id="status-text">Checking...</span>
+          </div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Players</div>
+          <div class="stat-value" id="players-val">--/--</div>
+        </div>
+        <div class="stat-box">
+          <div class="stat-label">Ping</div>
+          <div class="stat-value" id="ping-val">-- ms</div>
+        </div>
+      </div>
+
+      <div class="stats-grid" style="grid-template-columns: 1fr; margin-bottom: 24px;">
+        <div class="stat-box">
+          <div class="stat-label">Target Version</div>
+          <div class="stat-value" style="color: #a78bfa;">26.x</div>
+        </div>
+      </div>
+
+      <div class="ip-box">
+        <span class="ip-text" id="server-ip">mc.hypixel.net</span>
+        <button class="copy-btn" onclick="copyIp()">Copy IP</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const SERVER_IP = "mc.hypixel.net";
+
+    async function fetchServerStatus() {
+      const startTime = Date.now();
+      try {
+        const response = await fetch(`https://api.mcsrvstat.us/2/${SERVER_IP}`);
+        const latency = Date.now() - startTime;
+        const data = await response.json();
+
+        const statusDot = document.getElementById("status-dot");
+        const statusText = document.getElementById("status-text");
+        const playersVal = document.getElementById("players-val");
+        const pingVal = document.getElementById("ping-val");
+
+        if (data.online) {
+          statusDot.className = "status-indicator online";
+          statusText.textContent = "Online";
+          playersVal.textContent = `${data.players.online}/${data.players.max}`;
+          pingVal.textContent = `${latency} ms`;
+        } else {
+          statusDot.className = "status-indicator offline";
+          statusText.textContent = "Offline";
+          playersVal.textContent = "0/0";
+          pingVal.textContent = "N/A";
+        }
+      } catch (err) {
+        document.getElementById("status-text").textContent = "Error";
+      }
+    }
+
+    function copyIp() {
+      navigator.clipboard.writeText(SERVER_IP);
+      const btn = document.querySelector(".copy-btn");
+      btn.textContent = "Copied!";
+      setTimeout(() => { btn.textContent = "Copy IP"; }, 2000);
+    }
+
+    fetchServerStatus();
+    setInterval(fetchServerStatus, 30000); // Auto-refresh every 30 seconds
+  </script>
+</body>
+</html>
