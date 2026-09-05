@@ -15,6 +15,7 @@
       --mc-dark: #1e1e1e;
       --mc-panel: #2c2c2c;
       --discord-purple: #5865F2;
+      --discord-dark: #4752C4;
     }
 
     * {
@@ -25,80 +26,90 @@
       image-rendering: pixelated;
     }
 
+    html, body {
+      width: 100%;
+      height: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       background-color: #0d0d11;
       background-image: 
-        radial-gradient(circle at 50% 20%, rgba(85, 85, 255, 0.15), transparent 60%),
-        linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)),
+        radial-gradient(circle at 50% 30%, rgba(85, 85, 255, 0.2), transparent 70%),
+        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
         url('https://raw.githubusercontent.com/InventivotalentDev/minecraft-assets/1.20/assets/minecraft/textures/block/deepslate.png');
       background-repeat: repeat;
       color: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      min-height: 100vh;
-      padding: 20px;
+      padding: 40px 20px;
     }
 
-    .container {
+    .full-page-wrapper {
       width: 100%;
-      max-width: 650px;
+      max-width: 900px;
+      min-height: 80vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
     }
 
     .mc-box {
       background-color: var(--mc-panel);
-      border: 4px solid #000;
+      border: 6px solid #000;
       box-shadow: 
-        inset -4px -4px 0px 0px #141414,
-        inset 4px 4px 0px 0px #4a4a4a,
-        0px 10px 20px rgba(0,0,0,0.8);
-      padding: 32px 24px;
+        inset -6px -6px 0px 0px #141414,
+        inset 6px 6px 0px 0px #4a4a4a,
+        0px 20px 40px rgba(0,0,0,0.9);
+      padding: 48px 36px;
       text-align: center;
+      width: 100%;
     }
 
     .title {
-      font-size: 1.8rem;
+      font-size: clamp(2rem, 5vw, 3.2rem);
       color: var(--mc-gold);
-      text-shadow: 3px 3px 0px #3f2a00;
-      margin-bottom: 12px;
-      line-height: 1.3;
+      text-shadow: 4px 4px 0px #3f2a00;
+      margin-bottom: 16px;
+      line-height: 1.2;
     }
 
     .subtitle {
       color: #aaa;
-      font-size: 0.65rem;
+      font-size: clamp(0.7rem, 2vw, 0.9rem);
       line-height: 1.6;
-      margin-bottom: 28px;
-      text-shadow: 1px 1px 0px #000;
+      margin-bottom: 40px;
+      text-shadow: 2px 2px 0px #000;
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-      gap: 16px;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
       margin-bottom: 24px;
     }
 
     .stat-card {
       background-color: var(--mc-dark);
-      border: 3px solid #000;
+      border: 4px solid #000;
       box-shadow: 
-        inset -3px -3px 0px 0px #111,
-        inset 3px 3px 0px 0px #333;
-      padding: 16px 8px;
+        inset -4px -4px 0px 0px #111,
+        inset 4px 4px 0px 0px #333;
+      padding: 20px 12px;
     }
 
     .stat-label {
-      font-size: 0.55rem;
+      font-size: 0.65rem;
       color: #888;
       text-shadow: 1px 1px 0px #000;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     .stat-value {
-      font-size: 0.75rem;
+      font-size: 0.9rem;
       color: #fff;
-      text-shadow: 1px 1px 0px #000;
+      text-shadow: 2px 2px 0px #000;
     }
 
     .status-online { color: var(--mc-green); }
@@ -106,17 +117,17 @@
 
     .action-container {
       background-color: var(--mc-dark);
-      border: 3px solid #000;
+      border: 4px solid #000;
       box-shadow: 
-        inset -3px -3px 0px 0px #111,
-        inset 3px 3px 0px 0px #333;
-      padding: 12px 16px;
+        inset -4px -4px 0px 0px #111,
+        inset 4px 4px 0px 0px #333;
+      padding: 16px 20px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 12px;
+      gap: 16px;
       flex-wrap: wrap;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
 
     .action-container:last-child {
@@ -125,41 +136,55 @@
 
     .action-text {
       color: var(--mc-yellow);
-      font-size: 0.65rem;
-      text-shadow: 1px 1px 0px #000;
+      font-size: 0.8rem;
+      text-shadow: 2px 2px 0px #000;
       word-break: break-all;
+    }
+
+    .button-group {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
     }
 
     .mc-button {
       background-color: #707070;
       color: #fff;
-      border: 2px solid #000;
+      border: 3px solid #000;
       box-shadow: 
-        inset -2px -2px 0px 0px #383838,
-        inset 2px 2px 0px 0px #a8a8a8;
-      padding: 10px 16px;
-      font-size: 0.6rem;
+        inset -3px -3px 0px 0px #383838,
+        inset 3px 3px 0px 0px #a8a8a8;
+      padding: 12px 20px;
+      font-size: 0.7rem;
       cursor: pointer;
-      text-shadow: 1px 1px 0px #000;
+      text-shadow: 2px 2px 0px #000;
+      text-decoration: none;
+      display: inline-block;
     }
 
     .mc-button:active {
       box-shadow: 
-        inset 2px 2px 0px 0px #383838,
-        inset -2px -2px 0px 0px #a8a8a8;
+        inset 3px 3px 0px 0px #383838,
+        inset -3px -3px 0px 0px #a8a8a8;
     }
 
     .discord-btn {
       background-color: var(--discord-purple);
       box-shadow: 
-        inset -2px -2px 0px 0px #2c3380,
-        inset 2px 2px 0px 0px #8892f7;
+        inset -3px -3px 0px 0px #2c3380,
+        inset 3px 3px 0px 0px #8892f7;
+    }
+
+    .discord-btn:active {
+      box-shadow: 
+        inset 3px 3px 0px 0px #2c3380,
+        inset -3px -3px 0px 0px #8892f7;
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
+  <div class="full-page-wrapper">
     <div class="mc-box">
       <h1 class="title">MOONLIGHT SMP</h1>
       <p class="subtitle">A brand new adventure is currently in development.</p>
@@ -193,7 +218,10 @@
 
       <div class="action-container">
         <span class="action-text" style="color: #8892f7;">discord.gg/v9fGkejqs</span>
-        <button class="mc-button discord-btn" onclick="copyText('https://discord.gg/v9fGkejqs', this, 'COPY DISCORD')">COPY DISCORD</button>
+        <div class="button-group">
+          <a href="https://discord.gg/v9fGkejqs" target="_blank" class="mc-button discord-btn">JOIN DISCORD</a>
+          <button class="mc-button" onclick="copyText('https://discord.gg/v9fGkejqs', this, 'COPY LINK')">COPY LINK</button>
+        </div>
       </div>
     </div>
   </div>
