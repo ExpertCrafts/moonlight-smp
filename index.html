@@ -4,11 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Moonlight SMP</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&family=Press+Start+2P&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
   <style>
     :root {
       --mc-font: 'Press Start 2P', monospace;
-      --sans-font: 'Montserrat', sans-serif;
       --mc-gold: #ffaa00;
       --mc-yellow: #ffff55;
       --mc-green: #55ff55;
@@ -17,19 +16,21 @@
       --btn-light: #7a2b34;
       --btn-hover: #963541;
       --discord-color: #5865F2;
+      --discord-hover: #4752C4;
     }
 
     * {
       box-sizing: border-box;
       margin: 0;
       padding: 0;
+      font-family: var(--mc-font);
+      image-rendering: pixelated;
     }
 
     html, body {
       width: 100vw;
       height: 100vh;
       overflow-x: hidden;
-      font-family: var(--sans-font);
     }
 
     body {
@@ -47,7 +48,9 @@
       padding: 40px 20px;
       min-height: 100vh;
       border: 12px solid #000;
-      image-rendering: pixelated;
+      box-shadow: 
+        inset -10px -10px 0px 0px #141414,
+        inset 10px 10px 0px 0px #4a4a4a;
     }
 
     .header-section {
@@ -56,7 +59,6 @@
     }
 
     .title {
-      font-family: var(--mc-font);
       font-size: clamp(2.2rem, 5vw, 4rem);
       color: var(--mc-gold);
       text-shadow: 4px 4px 0px #3f2a00;
@@ -65,7 +67,6 @@
     }
 
     .subtitle {
-      font-family: var(--mc-font);
       color: #aaa;
       font-size: clamp(0.7rem, 1.5vw, 1rem);
       line-height: 1.6;
@@ -98,7 +99,6 @@
     }
 
     .stat-label {
-      font-family: var(--mc-font);
       font-size: 0.65rem;
       color: #888;
       text-shadow: 1px 1px 0px #000;
@@ -106,7 +106,6 @@
     }
 
     .stat-value {
-      font-family: var(--mc-font);
       font-size: 1rem;
       color: #fff;
       text-shadow: 2px 2px 0px #000;
@@ -115,46 +114,39 @@
     .status-online { color: var(--mc-green); }
     .status-offline { color: var(--mc-red); }
 
-    /* Angled Action Bar Styling */
+    /* Pixelated Angled Action Bar */
     .angled-action-bar {
       display: flex;
       width: 100%;
+      border: 6px solid #000;
       box-shadow: 0 10px 30px rgba(0,0,0,0.8);
       overflow: hidden;
-      border: 3px solid #000;
-      border-radius: 4px;
+      background-color: #000;
     }
 
     .angled-btn {
       flex: 1;
       background-color: var(--btn-dark);
       color: #fff;
-      padding: 22px 10px;
-      font-weight: 900;
-      font-size: clamp(1rem, 2vw, 1.4rem);
-      letter-spacing: 1px;
-      text-transform: uppercase;
+      padding: 24px 10px;
+      font-size: clamp(0.8rem, 1.8vw, 1.2rem);
+      text-shadow: 3px 3px 0px #000;
       border: none;
       cursor: pointer;
       text-align: center;
       text-decoration: none;
       position: relative;
-      transition: background-color 0.2s ease, transform 0.1s ease;
+      transition: background-color 0.15s ease;
       display: flex;
+      flex-direction: column;
       align-items: center;
       justify-content: center;
+      gap: 8px;
     }
 
     .angled-btn:nth-child(2) {
-      background-color: var(--btn-light);
-      clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
-      margin-left: -20px;
-      padding-left: 30px;
-    }
-
-    .angled-btn:nth-child(3) {
       background-color: var(--discord-color);
-      clip-path: polygon(8% 0, 100% 0, 100% 100%, 0% 100%);
+      clip-path: polygon(6% 0, 100% 0, 100% 100%, 0% 100%);
       margin-left: -20px;
       padding-left: 30px;
     }
@@ -163,32 +155,26 @@
       background-color: var(--btn-hover);
     }
 
-    .angled-btn:nth-child(3):hover {
-      background-color: #4752C4;
-    }
-
-    .angled-btn:active {
-      transform: scale(0.99);
+    .angled-btn:nth-child(2):hover {
+      background-color: var(--discord-hover);
     }
 
     .btn-subtext {
       display: block;
-      font-size: 0.6rem;
-      font-weight: 700;
-      opacity: 0.8;
-      margin-top: 4px;
-      text-transform: none;
+      font-size: 0.55rem;
+      color: var(--mc-yellow);
+      text-shadow: 1px 1px 0px #000;
     }
 
     @media (max-width: 768px) {
       .angled-action-bar {
         flex-direction: column;
       }
-      .angled-btn, .angled-btn:nth-child(2), .angled-btn:nth-child(3) {
+      .angled-btn, .angled-btn:nth-child(2) {
         clip-path: none;
         margin-left: 0;
-        padding: 18px;
-        border-bottom: 2px solid #000;
+        padding: 20px;
+        border-bottom: 4px solid #000;
       }
     }
   </style>
@@ -222,24 +208,13 @@
 
     <div class="angled-action-bar">
       <button class="angled-btn" id="ip-btn" onclick="copyIp()">
-        <div>
-          SERVER IP
-          <span class="btn-subtext" id="ip-subtext">Click to Copy</span>
-        </div>
+        <span>SERVER IP</span>
+        <span class="btn-subtext" id="ip-subtext">mc.hypixel.net</span>
       </button>
 
-      <a href="minecraft://mc.hypixel.net" class="angled-btn">
-        <div>
-          LAUNCH CLIENT
-          <span class="btn-subtext">Direct Connect</span>
-        </div>
-      </a>
-
-      <button class="angled-btn" id="discord-btn" onclick="openDiscord()" oncontextmenu="copyDiscord(event)">
-        <div>
-          DISCORD
-          <span class="btn-subtext" id="discord-subtext">Click: Join | Right-Click: Copy</span>
-        </div>
+      <button class="angled-btn" id="discord-btn" onclick="copyDiscord()">
+        <span>DISCORD</span>
+        <span class="btn-subtext" id="discord-subtext">CLICK TO COPY LINK</span>
       </button>
     </div>
   </div>
@@ -280,20 +255,15 @@
     function copyIp() {
       navigator.clipboard.writeText(SERVER_IP);
       const subtext = document.getElementById("ip-subtext");
-      subtext.textContent = "IP Copied!";
-      setTimeout(() => { subtext.textContent = "Click to Copy"; }, 2000);
+      subtext.textContent = "COPIED TO CLIPBOARD!";
+      setTimeout(() => { subtext.textContent = SERVER_IP; }, 2000);
     }
 
-    function openDiscord() {
-      window.open(DISCORD_URL, "_blank");
-    }
-
-    function copyDiscord(e) {
-      e.preventDefault();
+    function copyDiscord() {
       navigator.clipboard.writeText(DISCORD_URL);
       const subtext = document.getElementById("discord-subtext");
-      subtext.textContent = "Link Copied!";
-      setTimeout(() => { subtext.textContent = "Click: Join | Right-Click: Copy"; }, 2000);
+      subtext.textContent = "LINK COPIED!";
+      setTimeout(() => { subtext.textContent = "CLICK TO COPY LINK"; }, 2000);
     }
 
     fetchServerStatus();
