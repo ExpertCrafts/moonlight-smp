@@ -8,16 +8,12 @@
   <style>
     :root {
       --mc-font: 'Press Start 2P', monospace;
-      --mc-gold: #a78bfa;
+      --mc-purple: #a78bfa;
       --mc-yellow: #ffff55;
       --mc-green: #55ff55;
       --mc-red: #ff5555;
       --mc-dark: #12161f;
       --mc-panel: #1a1f2c;
-      --btn-dark: #3b1f24;
-      --btn-hover: #50262e;
-      --discord-color: #5865F2;
-      --discord-hover: #4752C4;
     }
 
     * {
@@ -29,62 +25,64 @@
     }
 
     html, body {
-      width: 100vw;
-      height: 100vh;
+      width: 100%;
+      height: 100%;
       overflow-x: hidden;
     }
 
     body {
-      background-color: #0b0e14;
+      background-color: var(--mc-panel);
       background-image: 
-        radial-gradient(circle at 50% 30%, rgba(124, 58, 237, 0.15), transparent 70%),
-        linear-gradient(rgba(0,0,0,0.65), rgba(0,0,0,0.65)),
+        radial-gradient(circle at 50% 30%, rgba(124, 58, 237, 0.18), transparent 70%),
+        linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.5)),
         url('https://raw.githubusercontent.com/InventivotalentDev/minecraft-assets/1.20/assets/minecraft/textures/block/deepslate.png');
       background-repeat: repeat;
       color: #fff;
       display: flex;
-      justify-content: center;
+      flex-direction: column;
+      justify-content: space-between;
       align-items: center;
-      padding: 20px;
-    }
-
-    .container {
-      width: 100%;
-      max-width: 800px;
-    }
-
-    .mc-box {
-      background-color: var(--mc-panel);
-      border: 6px solid #000;
+      padding: 40px 24px;
+      min-height: 100vh;
+      border: 12px solid #000;
       box-shadow: 
-        inset -6px -6px 0px 0px #0f121a,
-        inset 6px 6px 0px 0px #2a3144,
-        0px 20px 40px rgba(0,0,0,0.9);
-      padding: 40px 32px;
+        inset -8px -8px 0px 0px #0f121a,
+        inset 8px 8px 0px 0px #2a3144;
+    }
+
+    .header-section {
       text-align: center;
+      margin-top: 10px;
     }
 
     .title {
-      font-size: clamp(1.8rem, 4vw, 3rem);
-      color: var(--mc-gold);
-      text-shadow: 4px 4px 0px #2e1065;
-      margin-bottom: 16px;
+      font-size: clamp(2rem, 5.5vw, 4rem);
+      color: var(--mc-purple);
+      text-shadow: 5px 5px 0px #2e1065;
+      margin-bottom: 20px;
       line-height: 1.2;
     }
 
     .subtitle {
       color: #9ca3af;
-      font-size: clamp(0.55rem, 1.2vw, 0.75rem);
-      line-height: 1.8;
-      margin-bottom: 32px;
+      font-size: clamp(0.7rem, 1.8vw, 1rem);
+      line-height: 1.6;
       text-shadow: 2px 2px 0px #000;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 1200px;
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      margin: 20px 0;
     }
 
     .stats-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 16px;
-      margin-bottom: 24px;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
     }
 
     .stat-card {
@@ -93,18 +91,19 @@
       box-shadow: 
         inset -4px -4px 0px 0px #090b10,
         inset 4px 4px 0px 0px #212838;
-      padding: 20px 12px;
+      padding: 24px 16px;
+      text-align: center;
     }
 
     .stat-label {
-      font-size: 0.55rem;
+      font-size: 0.65rem;
       color: #6b7280;
       text-shadow: 1px 1px 0px #000;
-      margin-bottom: 12px;
+      margin-bottom: 14px;
     }
 
     .stat-value {
-      font-size: 0.85rem;
+      font-size: 1rem;
       color: #fff;
       text-shadow: 2px 2px 0px #000;
     }
@@ -117,112 +116,126 @@
       display: flex;
       width: 100%;
       border: 6px solid #000;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+      box-shadow: 0 12px 30px rgba(0,0,0,0.9);
       overflow: hidden;
       background-color: #000;
-      margin-top: 8px;
     }
 
     .angled-btn {
       flex: 1;
-      background-color: var(--btn-dark);
       color: #fff;
-      padding: 22px 10px;
-      font-size: clamp(0.75rem, 1.5vw, 1rem);
-      text-shadow: 2px 2px 0px #000;
+      padding: 28px 12px;
+      font-size: clamp(0.85rem, 2vw, 1.2rem);
+      text-shadow: 3px 3px 0px #000;
       border: none;
       cursor: pointer;
       text-align: center;
+      text-decoration: none;
       position: relative;
-      transition: background-color 0.15s ease;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 10px;
     }
 
-    .angled-btn:nth-child(2) {
-      background-color: var(--discord-color);
+    /* Pixel noise background textures generated dynamically via SVG filter */
+    .ip-btn-bg {
+      background-color: #3b1f24;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.08) 15%, transparent 16%),
+        radial-gradient(rgba(0, 0, 0, 0.3) 15%, transparent 16%);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
+    }
+
+    .ip-btn-bg:hover {
+      background-color: #50262e;
+    }
+
+    .discord-btn-bg {
+      background-color: #5865F2;
+      background-image: 
+        radial-gradient(rgba(255, 255, 255, 0.12) 15%, transparent 16%),
+        radial-gradient(rgba(0, 0, 0, 0.25) 15%, transparent 16%);
+      background-size: 8px 8px;
+      background-position: 0 0, 4px 4px;
       clip-path: polygon(6% 0, 100% 0, 100% 100%, 0% 100%);
       margin-left: -20px;
-      padding-left: 30px;
+      padding-left: 35px;
     }
 
-    .angled-btn:hover {
-      background-color: var(--btn-hover);
-    }
-
-    .angled-btn:nth-child(2):hover {
-      background-color: var(--discord-hover);
+    .discord-btn-bg:hover {
+      background-color: #4752C4;
     }
 
     .btn-subtext {
       display: block;
-      font-size: 0.5rem;
+      font-size: 0.6rem;
       color: var(--mc-yellow);
       text-shadow: 1px 1px 0px #000;
     }
 
-    @media (max-width: 650px) {
+    @media (max-width: 768px) {
       .angled-action-bar {
         flex-direction: column;
       }
-      .angled-btn, .angled-btn:nth-child(2) {
+      .discord-btn-bg {
         clip-path: none;
         margin-left: 0;
-        padding: 18px;
-        border-bottom: 4px solid #000;
+        padding: 24px 12px;
+        border-top: 4px solid #000;
       }
     }
   </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="mc-box">
-      <h1 class="title">MOONLIGHT SMP</h1>
-      <p class="subtitle">A brand new adventure is currently in development.</p>
+  <div class="header-section">
+    <h1 class="title">MOONLIGHT SMP</h1>
+    <p class="subtitle">A brand new adventure is currently in development.</p>
+  </div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-label">STATUS</div>
-          <div class="stat-value" id="status-val">Loading...</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">PLAYERS</div>
-          <div class="stat-value" id="players-val">--/--</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-label">PING</div>
-          <div class="stat-value" id="ping-val">-- ms</div>
-        </div>
+  <div class="main-content">
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-label">STATUS</div>
+        <div class="stat-value" id="status-val">Loading...</div>
       </div>
-
-      <div class="stats-grid" style="grid-template-columns: 1fr; margin-bottom: 24px;">
-        <div class="stat-card">
-          <div class="stat-label">TARGET VERSION</div>
-          <div class="stat-value" style="color: var(--mc-gold);">26.x</div>
-        </div>
+      <div class="stat-card">
+        <div class="stat-label">PLAYERS</div>
+        <div class="stat-value" id="players-val">--/--</div>
       </div>
-
-      <div class="angled-action-bar">
-        <button class="angled-btn" onclick="copyIp()">
-          <span>SERVER IP</span>
-          <span class="btn-subtext" id="ip-subtext">mc.hypixel.net</span>
-        </button>
-
-        <button class="angled-btn" onclick="copyDiscord()">
-          <span>DISCORD</span>
-          <span class="btn-subtext" id="discord-subtext">CLICK TO COPY LINK</span>
-        </button>
+      <div class="stat-card">
+        <div class="stat-label">PING</div>
+        <div class="stat-value" id="ping-val">-- ms</div>
       </div>
+    </div>
+
+    <div class="stats-grid" style="grid-template-columns: 1fr;">
+      <div class="stat-card">
+        <div class="stat-label">TARGET VERSION</div>
+        <div class="stat-value" style="color: var(--mc-purple);">26.x</div>
+      </div>
+    </div>
+
+    <div class="angled-action-bar">
+      <button class="angled-btn ip-btn-bg" onclick="copyIp()">
+        <span>SERVER IP</span>
+        <span class="btn-subtext" id="ip-subtext">mc.hypixel.net</span>
+      </button>
+
+      <a href="https://discord.gg/v9fGkejqs" target="_blank" class="angled-btn discord-btn-bg">
+        <span>DISCORD</span>
+        <span class="btn-subtext">CLICK TO JOIN DISCORD</span>
+      </a>
     </div>
   </div>
 
+  <div></div>
+
   <script>
     const SERVER_IP = "mc.hypixel.net";
-    const DISCORD_URL = "https://discord.gg/v9fGkejqs";
 
     async function fetchServerStatus() {
       const startTime = Date.now();
@@ -256,13 +269,6 @@
       const subtext = document.getElementById("ip-subtext");
       subtext.textContent = "COPIED TO CLIPBOARD!";
       setTimeout(() => { subtext.textContent = SERVER_IP; }, 2000);
-    }
-
-    function copyDiscord() {
-      navigator.clipboard.writeText(DISCORD_URL);
-      const subtext = document.getElementById("discord-subtext");
-      subtext.textContent = "LINK COPIED!";
-      setTimeout(() => { subtext.textContent = "CLICK TO COPY LINK"; }, 2000);
     }
 
     fetchServerStatus();
